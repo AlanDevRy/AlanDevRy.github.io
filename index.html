@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="refresh" content=" ">
+	<title>11 урок PJS</title>
+</head>
+<body>
+
+ 
+
+
+
+
+
+	<script type="text/javascript" src="pointjs.js"></script> 
+
+	<script>
+		
+		var js = new PointJS('2d', 1000, 550, {backgroundColor:'gray'});
+		js.system.initFullPage();
+		var p = js.vector.point;		// Вектора Подключили - буква p 
+		var game = js.game;
+		
+		 
+		var m = js.mouseControl;
+		m.initMouseControl();
+		 
+		var random = js.math.random;
+		var rc = js.colors.randomColor;
+		var log = js.system.log;
+		
+		var player = game.newCircleObject({
+			x:1000,
+			y:1000, 
+			radius:10,
+			strokeWidth:5,
+			strokeColor:'#fff',
+			fillColor:'black',
+			angle : 0, 
+			alpha : 1, 
+		})
+		
+		
+		
+		
+		 // Отрисовать текст  // SCORE - 
+		 var text2 = game.newTextObject({  
+			 size: 20,
+			 padding: 10,
+			 color: 'white'
+		 });
+		
+		
+		// ЦИКЛ - Будем множить ФОН и по X и по Y
+		var s = 50, x, y, fon=[]; {		//  fon=[]; = Массив
+			for(x=0; x<50; x++) {
+				for(y=0; y<50; y++) {		// 50*50 = 2500px по X и Y
+					fon.push( 					// JS - Добавляет к концу массива = Элемент
+						game.newRectObject({
+							x: x*s,
+							y: y*s, 
+							w: s-1,
+							h: s-1,
+							strokeWidth:1,
+							strokeColor:' ',	// #181818
+							fillColor:'black'		// BurlyWood - Плитке
+						} )
+					) 	
+				
+				} 
+			} 
+		};
+		
+		
+		
+		// AGARIO
+		// ОБЪЕКТЫ В ИГРЕ - Шарики
+		var box = []; 		{
+			for(b=0; b<300; b++) {
+				box.push(
+					game.newCircleObject({	// ВСЕ РАНДОМ
+						x: random(0,2500),
+						y: random(0,2500),
+						radius: random(3,10),
+						strokeWidth: random(30,70),
+						strokeColor: rc(0,255),
+						fillColor: rc(0,255),
+						angle : 0, 
+						alpha : 1, 
+						
+						
+						
+					})
+				)
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		 
+		
+		
+		
+		
+		
+		 
+ 
+		
+		
+		game.newLoop('agario', function() {
+			game.clear(); 
+			
+			
+			
+			 
+			 
+			
+			
+			// ВРАЩЕНИЕ ПЛАНЕТ
+			for (var i in box) {
+				// Проверить видит ли объект камера (игрок)  = ФОН
+				box[i].turn(random(1,10));
+			};
+			
+			// ВИБРАЦИЯ ЧЕРНОЙ ДЫРЫ
+			for (var i in player) { 
+				player.turn(1000);
+				
+			};
+			
+			
+			
+			
+			
+			
+			// ЦИКЛ ФОР - Для отрисовки Элементов МАССИВА
+			// 1 цикл = 1 отрисованный квадрат
+			for (var i in fon) {
+				// Проверить видит ли объект камера (игрок)  = ФОН
+				if(fon[i].isInCamera() ) {		 
+					fon[i].draw();
+				}
+			};
+			
+			for (var b in box) {
+				// Проверить видит ли объект камера (игрок) = ОБЪЕКТЫ ШАРЫ
+				if(box[b].isInCamera() ) {		 
+					box[b].draw();
+				}
+			};
+			
+			
+			// Двигает ШАР - в СТОРОНУ Указателя МЫШКИ, каждые 0,03с
+			player.moveTimeC(m.getPosition(), player.radius*1.5+30);// player.radius = был число 30
+			
+			// Рисует Объект Героя
+			player.draw();
+			 
+			 
+			 
+		
+			/*
+			
+			Добавить Звук при Столкновении с Планетами
+			
+			if (player.isDynamicIntersect ( box[b].getDynamicBox() ) ) { 
+			
+					soundClick();
+			};
+			*/
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			
+			 
+			 // НАЧАЛО ЦИКЛА for - ГЕНЕРАЦИИ ШАРИКОВ
+			// При столкновении Dnamic box Игрока с box Объекта
+			for (var b in box) {
+				
+				// Проверяем Расстояние ОБЪЕКТОВ, относительно нашего ИГРОВОГО ОБЪЕКТА
+				
+				if (box[b].getDistance(player.getPosition(1)) < player.radius + 10 ) {
+					// Дает команду по времени, на притяжение Объектов (Центр Объ.)
+					box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
+				};
+				
+				
+				if (player.radius > 20) {
+					if (box[b].getDistance(player.getPosition(1)) < player.radius + 150 ) {
+					// Дает команду по времени, на притяжение Объектов (Центр Объ.)
+						box[b].moveTimeC(player.getPosition(1), 20)		// (1) = Центр ,40 = Скорость
+					};
+					if (player.radius > 50) {
+						if (box[b].getDistance(player.getPosition(1)) < player.radius + 500 ) {
+						// Дает команду по времени, на притяжение Объектов (Центр Объ.)
+							box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
+						}; 
+					}; 
+					if (player.radius > 70) {
+						if (box[b].getDistance(player.getPosition(1)) < player.radius + 1000 ) {
+						// Дает команду по времени, на притяжение Объектов (Центр Объ.)
+							box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
+						};
+						player.fillColor = 'red';   
+						
+					}; 
+				};  
+				
+				 
+				 
+				
+				// Нужно Притяжение = ЗАВЯЗАТЬ НА РАДИУСЕ ОБЪЕКТА, А НЕ ЕЕ ЦЕНТРА
+				
+				
+				/*		КАК МАГНИТ = ПРИТЯГИВАЕТ Все Объекты - БЛИЖЕ 400px
+				if (box[b].getDistance(player.getPosition(1)) < 400  ) {
+					// Дает команду по времени, на притяжение Объектов (Центр Объ.)
+					box[b].moveTimeC(player.getPosition(1), 40)		// (1) = Центр, 	40 = Скорость, Чем меньше = Тем быстрее притягиваются
+				}
+				*/
+				 
+				
+				// Если BOXes Бьются у 1 и 2 объекта box[0,1.2,3 и тд.] - splice Удаляет (b-1)
+				if (player.isDynamicIntersect(box[b].getDynamicBox())) {
+					box.splice(b,1);		// При ударе, Съедать 1
+					
+					// Метед = Увеличение ОБЪЕКТА ИЗ ЦЕНТРА	= .scaleC
+					// player.scaleC(0.5);		// За скобками - Получился РАСТУЩИЙ ЭПИЦЕНТ ВЗРЫВА 
+					
+					if(player.radius < 300) {
+						// console.log(player.radius);
+						player.scaleC(2);	// player = Увеличивается на 0.5 
+					};
+				};
+			
+				// ДЕРЖАТЬ ПЛАНКУ ЕДЫ НА КАРТЕ - ОТ 1199шт
+				if(box.length < 149) { 
+					for(b=0; b<300; b++) {			// Если Элем. меньше 1199 = Добавить +200шт
+						box.push(								// .push = Добавляет к концу Массива
+							game.newCircleObject({		// ВСЕ РАНДОМ
+								x: random(0,2500),
+								y: random(0,2500),
+								radius: random(2,10),
+								strokeWidth: random(30,100),
+								strokeColor: rc(0,255),
+								fillColor: rc(0,255),
+								angle : 0, 
+								alpha : 1,
+								
+							})
+						)
+					}
+				}
+			
+			};	// ГЛАВНЫЙ for
+			
+			
+			
+			 
+			
+			 
+			// ТЕКСТ СЧЕТА
+			player.getPosition(1);
+			text2.reStyle({
+				text: 'РАЗМЕР : ' + player.radius + ' млн. км.' 
+			}); 
+			text2.setPositionS(p(20,20)); //  p(x,y) = отступ с Лева x и Сверху y
+			text2.draw();
+			 
+			
+			 
+			 // СТАРЫЙ ФОРМАТ не двигался дальше Краев - движок стар
+			//game.setCameraPosition(player.getPosition(1));	 
+			
+			// Cледит за Центром Объекта - player
+			js.camera.setPositionC(player.getPosition(1));
+			
+		});
+		
+		game.setLoop('agario');
+		game.start();
+		
+		
+		
+		
+		// С ЭЕЛЕМЕНТАМИ МАССИВА = РАБОТАТЬ ТОЛЬКО В ЦИКЛЕ
+		
+		/*
+		
+		defined		определенный
+		Intersect	Пересечь
+		
+		
+		*/
+	 
+		
+		
+		
+	</script>
+	
+	
+	<script type="text/javascript" >
+		function soundClick() {
+		  var audio = new Audio(); // Создаём новый элемент Audio 
+		  audio.src = 'PlanetSound.mp3'; // Указываем путь к звуку "клика" 
+		  audio.autoplay = true; // Автоматически запускаем
+		} 
+	
+	</script> 
+	
+	
+	
+	
+	
+	
+	
+	
+</body>
+</html>
