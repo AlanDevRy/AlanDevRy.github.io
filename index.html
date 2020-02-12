@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta http-equiv="refresh" content=" ">
-	<title>Agario 2</title>
+	<title> Agario 2</title>
 </head>
 <body>
 
@@ -196,31 +196,32 @@
 				
 				// Проверяем Расстояние ОБЪЕКТОВ, относительно нашего ИГРОВОГО ОБЪЕКТА
 				
-				if (box[b].getDistance(player.getPosition(1)) < player.radius + 10 ) {
+				if (box[b].getDistance(player.getPosition(1)) < player.radius + 20 ) {
 					// Дает команду по времени, на притяжение Объектов (Центр Объ.)
 					box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
 				};
 				
 				
-				if (player.radius > 20) {
+				if (player.radius > 30) {
 					if (box[b].getDistance(player.getPosition(1)) < player.radius + 150 ) {
 					// Дает команду по времени, на притяжение Объектов (Центр Объ.)
-						box[b].moveTimeC(player.getPosition(1), 20)		// (1) = Центр ,40 = Скорость
+						box[b].moveTimeC(player.getPosition(1), 50)		// (1) = Центр ,40 = Скорость
 					};
-					if (player.radius > 50) {
+					if (player.radius > 70) {
 						if (box[b].getDistance(player.getPosition(1)) < player.radius + 500 ) {
 						// Дает команду по времени, на притяжение Объектов (Центр Объ.)
-							box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
+							box[b].moveTimeC(player.getPosition(1), 500)		// (1) = Центр ,40 = Скорость
 						}; 
 					}; 
-					if (player.radius > 70) {
+					if (player.radius > 100) {
 						if (box[b].getDistance(player.getPosition(1)) < player.radius + 1000 ) {
 						// Дает команду по времени, на притяжение Объектов (Центр Объ.)
-							box[b].moveTimeC(player.getPosition(1), 10)		// (1) = Центр ,40 = Скорость
+							box[b].moveTimeC(player.getPosition(1), 1500)		// (1) = Центр ,40 = Скорость
 						};
 						player.fillColor = 'red';   
 						
-					}; 
+					};
+					
 				};  
 				
 				 
@@ -278,12 +279,14 @@
 			 
 			// ТЕКСТ СЧЕТА
 			player.getPosition(1);
+			
 			text2.reStyle({
 				text: 'РАЗМЕР : ' + player.radius + ' млн. км.' 
 			}); 
 			text2.setPositionS(p(20,20)); //  p(x,y) = отступ с Лева x и Сверху y
 			text2.draw();
-			 
+			
+			  
 			
 			 
 			 // СТАРЫЙ ФОРМАТ не двигался дальше Краев - движок стар
